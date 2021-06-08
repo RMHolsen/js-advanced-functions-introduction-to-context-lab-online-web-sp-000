@@ -28,14 +28,70 @@ const createEmployeeRecords = (employeeSuperArray) => {
 
 // Okay actually for clarity's sake we're calling the array of arrays SuperArray and the array of each employee just Array
 
-const createTimeInEvent = (employeeArray, dateTime) => {
+const createTimeInEvent = (employee, dateTime) => {
 // let's hope dateTime isn't a Forbidden Word
-    let 
-    let timeIn = {
-
-    }
+// dateTime format is YYYY-MM-DD HHMM for the sake of splitting along things
+    let timeArray = dateTime.split(' ');
+    // remember, the timeInEvents object value is an (empty, sometimes) array
+    employee.timeInEvents.push(
+        {
+            // array of timestamp objects
+            type: "TimeIn",
+            // check the test for the format of these (hour is a number, the full HHMM, date is a string)
+            hour: parseInt(timeArray[1], 10),
+            date: timeArray[0]
+        }
+    )
+    
+    return employee
 }
 
-const createTimeOutEvent = () => {
-    
+const createTimeOutEvent = (employee, dateTime) => {
+// Once More But Cleaner
+    let timeArray = dateTime.split(' ');
+    employee.timeOutEvents.push({
+            type: "TimeOut",
+            hour: parseInt(timeArray[1], 10),
+            date: timeArray[0]
+        })
+    return employee
+} 
+
+const hoursWorkedOnDate = (employee, date) => {
+    // console.log(`${employee} worked N hours on ${date}`)
+    let timeIn = employee.timeInEvents.find( function(i) {
+        return i.date === date;
+    }) // returns the full timeIn object (remember timeIn is an array of objects) that contains the date searched for
+    let timeOut = employee.timeOutEvents.find (function(i) {
+        return i.date === date;
+    })
+    let hoursWorked = (timeOut.hour - timeIn.hour) / 100
+    // remember timeIn and timeOut objects have an hour property that's an integer, yes?
+    return hoursWorked 
+    // return employee no
+}
+
+const wagesEarnedOnDate = (employee, date) => {
+    // console.log(`${employee} earned N wages on ${date}`)
+    let wage = employee.payPerHour
+    // check this is an integer? what formats do we need?
+    let wagesEarned = hoursWorkedOnDate(employee, date) * wage
+
+    return wagesEarned
+}
+
+const allWagesFor = (employee) => {
+    let datesWorked = employee.map()
+}
+
+const calculatePayroll = () => {
+
+}
+
+const findEmployeeByFirstName = (employeeSuperArray, name) => {
+    //console.log(name);
+    let employee = employeeSuperArray.find( function(n) {
+        return n.firstName === name;
+    })
+    return employee
 }
