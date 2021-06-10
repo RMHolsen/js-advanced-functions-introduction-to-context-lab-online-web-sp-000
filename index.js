@@ -81,12 +81,23 @@ const wagesEarnedOnDate = (employee, date) => {
 }
 
 const allWagesFor = (employee) => {
-    let datesWorked = employee.map()
+    let datesWorked = employee.timeInEvents.map( function(event) {
+        return event.date 
+    })
+
+    let totalWagesEarned = datesWorked.reduce( function(total, date) {
+        return total + wagesEarnedOnDate(employee, date)
+    }, 0)
+    // REMEMBER THE ZERO AT THE END SO IT INCLUDES THE FIRST ENTRY IN THE ARRAY
+    return totalWagesEarned 
 }
 
-const calculatePayroll = () => {
-
+const calculatePayroll = (employeeSuperArray) => {
+    return employeeSuperArray.reduce( function(total, employee) {
+        return total + allWagesFor(employee)
+    }, 0)
 }
+
 
 const findEmployeeByFirstName = (employeeSuperArray, name) => {
     //console.log(name);
